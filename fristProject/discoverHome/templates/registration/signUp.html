@@ -16,27 +16,27 @@
   <body style = "background: #f3e7d6;">
     
     <nav style = "height: 15vh;background-color: #f8ac60 !important;border-bottom: 3px solid black;" class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid" style = "">
-          <a class="navbar-brand" href="{% url 'home' %}"><img  style = "height : 8vh;" src = "{% static "media/logo.png" %}"</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0" style = "margin-left: 30%; margin-top: -48px;">
-              <div>
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#"> <h2 style = "color:black">Discover Home</h2></a>
-                </li>
-              </div>
-              
-            </ul>
-            <form class="d-flex">
-              <button class="btn btn-success" style = "margin-right:10px; width: 100px"><a style = "color:white" href = "{% url 'login' %}">Sign In</a></button>
-              <button class="btn btn-success" style = "width:100px"><a style = "color:white;" href = "{% url 'signup' %}">Sign Up</a></button>
-            </form>
-          </div>
+      <div class="container-fluid" style = "">
+        <a class="navbar-brand" href="{% url 'home' %}"><img  style = "height : 8vh;" src = "{% static "media/logo.png" %}"</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0" style = "margin-left: 20%; margin-top: -48px;">
+            <div>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#"> <h2 style = "color:sienna;font-size: 80px;font-family: cursive;">Discover Home</h2></a>
+              </li>
+            </div>
+            
+          </ul>
+          <form class="d-flex">
+            <button class="btn btn-success" style = "margin-right:10px; width: 100px;background-color:#ab6a47;    border-color: #ab6a47;"><a style = "color:white" href = "{% url 'login' %}">Sign In</a></button>
+            <button class="btn btn-success" style = "width:100px;background-color:#ab6a47;    border-color: #ab6a47;"><a style = "color:white;" href = "{% url 'signup' %}">Sign Up</a></button>
+          </form>
         </div>
-      </nav>
+      </div>
+    </nav>
 
     
         <form id = "user_register" style="border:1px solid #ccc">
@@ -141,6 +141,7 @@
         /* Float cancel and signup buttons and add an equal width */
         .cancelbtn, .signupbtn {
           float: left;
+          background-color: #ab6a47;
           width: 100%;
         }
         
@@ -160,6 +161,7 @@
         @media screen and (max-width: 300px) {
           .cancelbtn, .signupbtn {
              width: 100%;
+             background-color: #ab6a47;
           }
         }
         </style>

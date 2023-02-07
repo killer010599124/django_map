@@ -16,12 +16,12 @@
       html, body { width:100%;padding:0;margin:0; }
       .container { width:95%;max-width:980px;padding:1% 2%;margin:0 auto }
       #lat, #lon { text-align:right }
-      #map { width:100%;height:97%;padding:0;margin:0; }
+      #map { width:100%;height:84.5%;padding:0;margin:0; }
       .address { cursor:pointer }
       .address:hover { color:#AA0000;text-decoration:underline }
       </style>
   </head>
-  <body style = "">
+  <body onload="initial()" style = "">
     
     <nav style = "height: 15vh;background-color: #f8ac60 !important;border-bottom: 3px solid black;" class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid" style = "">
@@ -30,136 +30,134 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0" style = "margin-left: 30%; margin-top: -48px;">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0" style = "margin-left: 20%; margin-top: -48px;">
             <div>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"> <h2 style = "color:black">Discover Home</h2></a>
+                <a class="nav-link active" aria-current="page" href="#"> <h2 style = "color:sienna;font-size: 80px;font-family: cursive;">Discover Home</h2></a>
               </li>
             </div>
             
           </ul>
           <form class="d-flex">
-            <button class="btn btn-success" style = "margin-right:10px; width: 100px"><a style = "color:white" href = "{% url 'login' %}">Sign In</a></button>
-            <button class="btn btn-success" style = "width:100px"><a style = "color:white;" href = "{% url 'signup' %}">Sign Up</a></button>
+            <button class="btn btn-success" style = "margin-right:10px; width: 100px;background-color:#ab6a47;    border-color: #ab6a47;"><a style = "color:white" href = "{% url 'login' %}">Sign In</a></button>
+            <button class="btn btn-success" style = "width:100px;background-color:#ab6a47;    border-color: #ab6a47;"><a style = "color:white;" href = "{% url 'signup' %}">Sign Up</a></button>
           </form>
         </div>
       </div>
     </nav>
 
     <div style = "height : 85vh; display : flex; flex-direction:row;margin-top: -12px;">
-      <div class = "col-lg-3" style = "display: flex;display: flex;
+      <div id = "category" class = "col-lg-3" style = "display: flex;display: flex;
       margin: auto;
-      border-color: black;
-      border-width: 13px;
+      border-color: darkgoldenrod;
+      border-width: 3px;
+      border-style: solid;
       background-color: powderblue;
       border-radius: 10px;
-      background: #f3e7d6;
+      margin-top: 18vh;
+      position: absolute;
+      background: #f8ac60 !important;
       z-index: 999;">
-        <form class="row g-3" style = "margin: auto;">
-          <div class="col-12 row form_layout">
-            <label for="staticEmail" class="col-md-4 form-label">City</label>
-            <div class="col-md-8">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Select city</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
+        <form class="row g-3" style = "margin: auto;" >
+          <div style = "padding:20px;">
+              <div class="col-12 row form_layout">
+                <label for="staticEmail" class="col-md-4 form-label">City</label>
+                <div class="col-md-8">
+                  <select class="form-select" aria-label="Default select example" id = 'city' onchange="selectCity()">
+                    <option selected>Select city</option>
+                    <option value="Aarhus Lufthavn">Aarhus Lufthavn</option>
+                    <option value="Vejle">Vejle</option>
+                    <option value="Aalborg">Aalborg</option>
+                  </select>
+                </div>
+              </div>
+    
+              <div class="col-12 row form_layout">
+                <label for="Proximity" class="col-md-4 form-label">Proximity (miles)</label>
+                <div class="col-md-8">
+                  <select class="form-select" aria-label="Default select example">
+                    <option selected>Select miles</option>
+                    <option value="1">25</option>
+                    <option value="2">50</option>
+                    <option value="3">75</option>
+                    <option value="4">100</option>
+                  </select>
+                </div>
+              </div>
+    
+              <div class="col-12 row form_layout">
+                <label for="price" class="col-md-4 form-label">Price Range</label>
+                <div class="col-md-8">
+                  <select class="form-select" aria-label="Default select example">
+                    <option selected>Select price</option>
+                    <option value="1">Free</option>
+                    <option value="2">$25</option>
+                    <option value="3">$50</option>
+                    <option value="4">$75</option>
+                    <option value="4">$100+</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="col-12">
+                <label for="inputAddress" class="form-label">Departure</label>
+                <img id= "formHide" onclick = "hide_form()" src = "{% static "media/arrow-left.png" %}" style = "width: 40px;height: 40px;position: absolute;margin-left: 70%;">
+                <img id = "formShow"onclick = "show_form()" src = "{% static "media/arrow-right.png" %}" style = "    visibility: hidden; width: 40px;height: 40px;position: absolute;margin-left: -90px;">
+                <input type="text" class="form-control" id="inputAddress" placeholder="Apartment, studio, or floor">
+              </div>
+              <div class="col-12">
+                <label for="inputAddress2" class="form-label">Destination</label>
+                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+              </div>
+              <div class="col-12">
+                <label for="inputCity" class="form-label">Event or Activity</label>
+              </div>
+              <div class="col-12 row form_layout">
+                <label for="inputAddress" class="col-md-3 form-label">Date</label>
+                <div class="col-md-9">
+                  <input type="date" class=" form-control " id="date">
+                </div>
+              </div>
+              <div class="col-12 row form_layout">
+                <label for="inputAddress" class="col-md-3 form-label">Time</label>
+                <div class="col-md-9">
+                  <input type="time" class=" form-control " id="time">
+                </div>
+              </div>
           </div>
-
-          <div class="col-12 row form_layout">
-            <label for="Proximity" class="col-md-4 form-label">Proximity (miles)</label>
-            <div class="col-md-8">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Select miles</option>
-                <option value="1">25</option>
-                <option value="2">50</option>
-                <option value="3">75</option>
-                <option value="4">100</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-12 row form_layout">
-            <label for="price" class="col-md-4 form-label">Price Range</label>
-            <div class="col-md-8">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Select price</option>
-                <option value="1">Free</option>
-                <option value="2">$25</option>
-                <option value="3">$50</option>
-                <option value="4">$75</option>
-                <option value="4">$100+</option>
-              </select>
-            </div>
-          </div>
-          
-          <div class="col-12">
-            <label for="inputAddress" class="form-label">Departure</label>
-            <input type="text" class="form-control" id="inputAddress" placeholder="Apartment, studio, or floor">
-          </div>
-          <div class="col-12">
-            <label for="inputAddress2" class="form-label">Destination</label>
-            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-          </div>
-          <div class="col-12">
-            <label for="inputCity" class="form-label">Event or Activity</label>
-          </div>
-          <div class="col-12 row form_layout">
-            <label for="inputAddress" class="col-md-3 form-label">Date</label>
-            <div class="col-md-9">
-              <input type="date" class=" form-control " id="date">
-            </div>
-          </div>
-          <div class="col-12 row form_layout">
-            <label for="inputAddress" class="col-md-3 form-label">Time</label>
-            <div class="col-md-9">
-              <input type="time" class=" form-control " id="time">
-            </div>
-          </div>
-          
-          
         </form>
       </div>
       <div class = "col-lg-12">
         <div class="container">
 
-          <!-- <b>Coordinates</b>
-          <form>
-          <input type="text" name="lat1" id="lat1" size=12 value="">
-          <input type="text" name="lon1" id="lon1" size=12 value="">
-          </form>
-          <form>
-             <input type="text" name="lat2" id="lat2" size=12 value="">
-             <input type="text" name="lon2" id="lon2" size=12 value="">
-             </form> -->
+         {% comment %} <div>
+            <b>Address Lookup</b>
+            <div id="search1">
+              <label for="addr1">location1</label>
+              <input type="text" name="addr1" value="" id="addr1" size="58" oninput="addr_search1(this.value)" autocomplete="on"/>
+            <!-- <button type="button" onclick="addr_search();">Search</button> -->
+              <div id="results1"></div>
+              <div class="show_location1" style="display: none;"><label>Location 1</label> : <label  id="location1"></label></div>
+            </div>
+            
+            <div id="search2" style="margin-top: 20px;">
+              <label for="addr1">location2</label>
+              <input type="text" name="addr2" value="" id="addr2" size="58" oninput="addr_search2(this.value)" autocomplete="on"/>
+              <!-- <button type="button" onclick="addr_search();">Search</button> -->
+              <div id="results2"></div>
+              <div class="show_location2" style="display: none;"><label>Location 2</label> : <label id="location2"></label></div>
+            </div>
+            
+              <br /> 
+          </div> {% endcomment %}
           
-          {% comment %} <b>Address Lookup</b>
-          <div id="search1">
-             <label for="addr1">location1</label>
-          <input type="text" name="addr1" value="" id="addr1" size="58" oninput="addr_search1(this.value)" autocomplete="on"/>
-          <!-- <button type="button" onclick="addr_search();">Search</button> -->
-          <div id="results1"></div>
-          <div class="show_location1" style="display: none;"><label>Location 1</label> : <label  id="location1"></label></div>
-          </div>
-          
-          <div id="search2" style="margin-top: 20px;">
-             <label for="addr1">location2</label>
-             <input type="text" name="addr2" value="" id="addr2" size="58" oninput="addr_search2(this.value)" autocomplete="on"/>
-             <!-- <button type="button" onclick="addr_search();">Search</button> -->
-             <div id="results2"></div>
-             <div class="show_location2" style="display: none;"><label>Location 2</label> : <label id="location2"></label></div>
-             </div>
-          
-          <br /> {% endcomment %}
           
           <div id="map" style = "position: absolute; width: 100%; outline: none; left:0"></div>
           
           {% comment %} <div class="distance" style=" margin-top: 15px;"><label>Distance</label> : <label  id="distance"></label></div>
           <div class="hours" style=" margin-top: 15px;"><label>Hours</label> : <label  id="hours"></label></div>
            {% endcomment %}
-          </div>
+        </div>
       </div>
 
     </div>
@@ -179,7 +177,7 @@
         padding-bottom: 5px;
       }
       </style>
-      <script>
+      <script type="text/javascript">
 
         // // New York
         // var startlat = 39.90216640;
@@ -221,112 +219,147 @@
         //  document.getElementById('lon1').value = lon;
         //  myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
         // }
-        
-        var myArr1 = [];
+
+       // Aarhus [56.304542549999994,10.612849817576597]
+       //vejle [55.9495963 , 8.4863484]
+       // aalborg [57.0864352 , 9.868075521300991]
+        var myArr1 = [[56.304542549999994,10.612849817576597],[55.9495963,8.4863484],[57.0864352,9.868075521300991]];
         var myArr2 = [];
         var lati1 = "";
         var long1 = "";
         var lati2 = "";
         var long2 = "";
         var mapOptions ={
-                    center: [10, 10],
+                    center: [myArr1[0][0], myArr1[0][1]],
                     zoom: 5
                  };
         var map = new L.map('map', mapOptions);
         var layer = "";
         var marker = "";
         var latlngs = [];
+
         
-        map.remove();
-        mapOptions = {
-          center: [lati1, long1],
-          zoom: 5
+        
+        function initial(){
+                map.remove();
+                mapOptions ={
+                    center: [myArr1[0][0], myArr1[0][1]],
+                    zoom: 8
+                };
+                map = new L.map('map', mapOptions);
+                
+                layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+                map.addLayer(layer);         // Adding layer to the map
+                marker =new L.marker([myArr1[0][0], myArr1[0][1]]);    // Creating a Marker
+                // console.log(currentCity.)
+                marker.bindPopup("Aarhus Lufthavn").openPopup();
+                marker.addTo(map); // Adding marker to the map
         }
-        map = new L.map('map', mapOptions);
-        
-        // Creating a Layer object
-        layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-        map.addLayer(layer);         // Adding layer to the map
-        marker =new L.marker([50.84673, 4.35247]);    // Creating a Marker
-        
-        // Adding popup to the marker
-        //marker.bindPopup(myArr1[Number(number)].display_name).openPopup();
-        marker.addTo(map); // Adding marker to the map
+
+        function selectCity(){
+          //alert(e.target.value); 
+          var currentCity = document.getElementById("city");
+          
+          lati1 = myArr1[Number(currentCity.selectedIndex)-1][0];
+          long1 = myArr1[Number(currentCity.selectedIndex)-1][1];
+
+          console.log(lati1);
+          console.log(long1);
+
+          map.remove();
+          mapOptions = {
+            center: [lati1, long1],
+            zoom:8
+          }
+          map = new L.map('map', mapOptions);
+
+          layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+          map.addLayer(layer);         // Adding layer to the map
+          marker =new L.marker([lati1, long1]);    // Creating a Marker
+         // console.log(currentCity.)
+          marker.bindPopup(currentCity.value).openPopup();
+          marker.addTo(map); // Adding marker to the map
+        }
 
         const chooseAddr1 = (number) =>{
-           $("#results1").hide();
-           $(".show_location1").show();
+            $("#results1").hide();
+            $(".show_location1").show();
             $("#location1").html(myArr1[Number(number)].display_name);
             $(".distance").hide();
             $(".hours").hide();
         
+            lati1 = myArr1[Number(number)].lat;
+            long1 = myArr1[Number(number)].lon;
+            console.log(lati1);
+            console.log(long1);
             map.remove();
-                     mapOptions = {
-                    center: [lati1, long1],
-                    zoom: 5
-                 }
-                  map = new L.map('map', mapOptions);
-                 
-                 // Creating a Layer object
-                  layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-                 map.addLayer(layer);         // Adding layer to the map
-                  marker =new L.marker([lati1, long1]);    // Creating a Marker
-                 
-                 // Adding popup to the marker
-                 marker.bindPopup(myArr1[Number(number)].display_name).openPopup();
-                 marker.addTo(map); // Adding marker to the map
-           }
+            mapOptions = {
+              center: [lati1, long1],
+              zoom:8
+            }
+            
+            map = new L.map('map', mapOptions);
+            
+            // Creating a Layer object
+            layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+            map.addLayer(layer);         // Adding layer to the map
+            marker =new L.marker([lati1, long1]);    // Creating a Marker
+            
+            // Adding popup to the marker
+            marker.bindPopup(myArr1[Number(number)].display_name).openPopup();
+            marker.addTo(map); // Adding marker to the map
+        }
         
-           const chooseAddr2 = (number) =>{
-           $("#results2").hide();
-           $(".show_location2").show();
-            $("#location2").html(myArr2[Number(number)].display_name);
-        
-                 map.remove();
-        
-                 mapOptions = {
-                    center: [lati1, long1],
-                    zoom: 5
-                 }
-                  map = new L.map('map', mapOptions);
-                 
-                 // Creating a Layer object
-                  layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-                 map.addLayer(layer);         // Adding layer to the map
-                  marker =new L.marker([lati1, long1]);    // Creating a Marker
-                  marker.addTo(map);
-                 
-                  latlngs = [
-                    [lati1, long1],
-                    [myArr2[Number(number)].lat, myArr2[Number(number)].lon]
-                 ];
-        
-                 var latlng1 = L.latLng(lati1, long1);
-                 var latlng2 = L.latLng(myArr2[Number(number)].lat, myArr2[Number(number)].lon);
-        
-                 var distance = latlng1.distanceTo(latlng2) / 1000;
-                 var average_speed_airplane = 900;
-                 var hours =( distance / average_speed_airplane);
-                 // var minutes = parseInt((distance / average_speed_airplane)/60);
-        
-                 $(".distance").show();
-                 $(".hours").show();
-                 $("#distance").html(distance + " Km");
-                 $("#hours").html(hours + " hours   ");
-        
-                
-        
-                 marker =new L.marker([myArr2[Number(number)].lat, myArr2[Number(number)].lon]);    // Creating a Marker
-                 
-                 // Adding popup to the marker
-                 marker.bindPopup(myArr2[Number(number)].display_name).openPopup();
-                 marker.addTo(map); // Adding marker to the map
-                 // Creating a poly line
-                 var polyline = L.polyline(latlngs, {color: 'red'});
-                 
-                 // Adding to poly line to map
-                 polyline.addTo(map);
-           }
+        const chooseAddr2 = (number) =>{
+              $("#results2").hide();
+              $(".show_location2").show();
+              $("#location2").html(myArr2[Number(number)].display_name);
+            
+                    map.remove();
+            
+                    mapOptions = {
+                        center: [lati1, long1],
+                        zoom: 8
+                    }
+                      map = new L.map('map', mapOptions);
+                    
+                    // Creating a Layer object
+                      layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+                    map.addLayer(layer);         // Adding layer to the map
+                      marker =new L.marker([lati1, long1]);    // Creating a Marker
+                      marker.addTo(map);
+                    
+                      latlngs = [
+                        [lati1, long1],
+                        [myArr2[Number(number)].lat, myArr2[Number(number)].lon]
+                    ];
+            
+                    var latlng1 = L.latLng(lati1, long1);
+                    var latlng2 = L.latLng(myArr2[Number(number)].lat, myArr2[Number(number)].lon);
+            
+                    var distance = latlng1.distanceTo(latlng2) / 1000;
+                    var average_speed_airplane = 900;
+                    var hours =( distance / average_speed_airplane);
+                    // var minutes = parseInt((distance / average_speed_airplane)/60);
+            
+                    $(".distance").show();
+                    $(".hours").show();
+                    $("#distance").html(distance + " Km");
+                    $("#hours").html(hours + " hours   ");
+            
+                    
+            
+                    marker =new L.marker([myArr2[Number(number)].lat, myArr2[Number(number)].lon]);    // Creating a Marker
+                    
+                    // Adding popup to the marker
+                    marker.bindPopup(myArr2[Number(number)].display_name).openPopup();
+                    marker.addTo(map); // Adding marker to the map
+                    // Creating a poly line
+                    var polyline = L.polyline(latlngs, {color: 'red'});
+                    
+                    // Adding to poly line to map
+                    polyline.addTo(map);
+        }
         
         
         function myFunction1(arr)
@@ -392,8 +425,12 @@
         
               for(var k = 0 ; k<myArr1Cash.length ; k++)
               {
-                 if(myArr1Cash[k].display_name.toString().match("Germany"))
-                 myArr1.push(myArr1Cash[k]);
+                 if(myArr1Cash[k].display_name.toString().match("Denmark"))
+                 {
+                  console.log(myArr1Cash[k]);
+                  myArr1.push(myArr1Cash[k]);
+                 }
+                 
               }
         
             myFunction1(myArr1);
@@ -407,7 +444,7 @@
         {
         //  var inp = document.getElementById("addr");
          var xmlhttp = new XMLHttpRequest();
-         var url = "https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" + inp; 
+         var url = "https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" + inp;
          xmlhttp.onreadystatechange = function()
          {
            if (this.readyState == 4 && this.status == 200)
@@ -418,7 +455,7 @@
         
               for(var k = 0 ; k<myArr1Cash.length ; k++)
               {
-                 if(myArr1Cash[k].display_name.toString().match("Germany"))
+                 if(myArr1Cash[k].display_name.toString().match("Denmark"))
                  myArr2.push(myArr1Cash[k]);
               }
         
@@ -430,12 +467,17 @@
         }
         
         
-        
+        function show_form(){
+          document.getElementById("category").style.visibility = 'visible';
+          document.getElementById("formShow").style.visibility = 'hidden';
+          document.getElementById("formHide").style.visibility = 'visible';
+        }
+        function hide_form(){
+          var s = document.getElementById("category").style.visibility = 'hidden';
+          
+          document.getElementById("formShow").style.visibility = 'visible';
+          document.getElementById("formHide").style.visibility = 'hidden';
+        }
         </script>
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    -->
   </body>
 </html>
