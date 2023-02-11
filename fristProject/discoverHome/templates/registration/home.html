@@ -39,8 +39,16 @@
             
           </ul>
           <form class="d-flex">
-            <button class="btn btn-success" style = "height: 60px;font-family: cursive;margin-right:10px; width: 100px;background-color:#ab6a47;border-color: #ab6a47;"><a style = "color:white; text-decoration: none;" href = "{% url 'login' %}">Sign In</a></button>
-            <button class="btn btn-success" style = "width:100px;background-color:#ab6a47; font-family: cursive;   border-color: #ab6a47;"><a style = "color:white;text-decoration: none;" href = "{% url 'signup' %}">Sign Up</a></button>
+            <button id = 'signinBtn' class="btn btn-success" style = "height: 60px;font-family: cursive;margin-right:10px; width: 100px;background-color:#ab6a47;border-color: #ab6a47;"><a style = "color:white; text-decoration: none;" href = "{% url 'login' %}">Sign In</a></button>
+            <button id = 'signupBtn' class="btn btn-success" style = "width:100px;background-color:#ab6a47; font-family: cursive;   border-color: #ab6a47;"><a style = "color:white;text-decoration: none;" href = "{% url 'signup' %}">Sign Up</a></button>
+            <button id = 'logoutBtn' onclick="Logout()" class="btn btn-success" style = "height: 60px;font-family: cursive;margin-right:10px; width: 100px;background-color:#ab6a47;border-color: #ab6a47;"><a style = "color:white; text-decoration: none;" href = "{% url 'login' %}">Logout</a></button>
+            <div  style = "position: absolute;
+            font-family: cursive;
+            color: #ab6a47;
+            width: 300px;
+            margin-left: -315px;
+            text-align: right;font-size: 24px;"><p id = 'userinfo' style = "margin-top: 12px;">User</p></div>
+          
           </form>
         </div>
       </div>
@@ -179,50 +187,7 @@
       </style>
       <script type="text/javascript">
 
-        // // New York
-        // var startlat = 39.90216640;
-        // var startlon = 116.42101240;
         
-        // var options = {
-        //  center: [startlat, startlon],
-        //  zoom: 10
-        // }
-        
-        // document.getElementById('lat1').value = startlat;
-        // document.getElementById('lon1').value = startlon;
-        
-        // var map = L.map('map', options);
-        // var nzoom = 12;
-        
-        // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: 'OSM'}).addTo(map);
-        
-        // var myMarker = L.marker([startlat, startlon], {title: "Coordinates", alt: "Coordinates", draggable: true}).addTo(map).on('dragend', function() {
-        //  var lat = myMarker.getLatLng().lat.toFixed(8);
-        //  var lon = myMarker.getLatLng().lng.toFixed(8);
-        // //  var czoom = map.getZoom();
-        // //  if(czoom < 18) { nzoom = czoom + 2; }
-        // //  if(nzoom > 18) { nzoom = 18; }
-        // //  if(czoom != 18) { map.setView([lat,lon], nzoom); } else { map.setView([lat,lon]); }
-        //  document.getElementById('lat1').value = lat;
-        //  document.getElementById('lon1').value = lon;
-        //  myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
-        // });
-        
-        // function chooseAddr1(lat1, lng1)
-        // {
-        //  myMarker.closePopup();
-        //  map.setView([lat1, lng1],18);
-        //  myMarker.setLatLng([lat1, lng1]);
-        //  lat = lat1.toFixed(8);
-        //  lon = lng1.toFixed(8);
-        //  document.getElementById('lat1').value = lat;
-        //  document.getElementById('lon1').value = lon;
-        //  myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
-        // }
-
-       // Aarhus [56.304542549999994,10.612849817576597]
-       //vejle [55.9495963 , 8.4863484]
-       // aalborg [57.0864352 , 9.868075521300991]
         var myArr1 = [[56.304542549999994,10.612849817576597],[55.9495963,8.4863484],[57.0864352,9.868075521300991]];
         var myArr2 = [];
         var lati1 = "";
@@ -359,8 +324,7 @@
                     
                     // Adding to poly line to map
                     polyline.addTo(map);
-        }
-        
+        }  
         
         function myFunction1(arr)
         {
@@ -410,8 +374,7 @@
         }
         
         function addr_search1(inp)
-        {
-        
+        {   
         //  var inp = document.getElementById("addr");
          var xmlhttp = new XMLHttpRequest();
          var url = "https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" + inp;
@@ -472,12 +435,41 @@
           document.getElementById("formShow").style.visibility = 'hidden';
           document.getElementById("formHide").style.visibility = 'visible';
         }
+        
         function hide_form(){
           var s = document.getElementById("category").style.visibility = 'hidden';
           
           document.getElementById("formShow").style.visibility = 'visible';
           document.getElementById("formHide").style.visibility = 'hidden';
         }
-        </script>
-  </body>
+        function Logout(){
+          localStorage.clear();
+          
+          console.log("{% url 'signup' %}")
+          //window.location.href = "{% url 'signup' %}";
+        }
+      </script>
+      <script>
+        $(document).ready(function(){
+          
+          var username = localStorage.getItem('username');
+          if(username){
+            $("#signinBtn").hide();
+            $("#signupBtn").hide();
+            $("#logoutBtn").show();
+            $("#userinfo").show();
+            $("#userinfo").html(username);
+          }
+          else{
+            $("#signinBtn").show();
+            $("#signupBtn").show();
+            $("#logoutBtn").hide();
+            $("#userinfo").hide();
+          }
+        });
+        
+        
+      </script>
+      
+      </body>
 </html>

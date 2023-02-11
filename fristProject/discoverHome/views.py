@@ -33,11 +33,11 @@ def signin(request):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     if is_ajax:
         if request.method == 'POST':
-            infodata = data = json.load(request)
+            infodata = json.load(request)
             data = UserInfo.objects.raw('SELECT * FROM user WHERE  email = %s and password = %s', (infodata['email'],infodata['pwd'],))
-            
+            print(data[0].username)
             if data:
-                return JsonResponse({'status': 'success'})
+                return JsonResponse({'status': data[0].username})
             else:
                 return JsonResponse({'status': 'failed'})
         return JsonResponse({'status': 'Invalid request'}, status=400)

@@ -40,7 +40,6 @@
 
       <form id = "login_form" method="post" style = "margin-top: 20vh;">
         
-      
         <div class="container">
           <label for="uname"><b>Email</b></label>
           <input type="text" placeholder="Enter Email" name="email" required>
@@ -51,8 +50,6 @@
           <button type="submit" style = "background-color: #ab6a47;">Login</button>
           
         </div>
-      
-     
       </form>
       <div class="alert success" id = 'notification1'>
           
@@ -86,14 +83,16 @@
               .then(response => response.json())
               .then(data => {
                 console.log(data);
-                if(data.status == "success"){
+                if(data.status != "failed"){
                    myclickHandlerSuccess();
+                   console.log(data);
+                   localStorage.setItem('username',data.status);
+                  // localStorage.setItem('email', document.querySelector('input[name=email]').value);
+
                    window.location.href = "{% url 'home' %}";
-                }
-                   
+                }  
                 else myclickHandlerFalied();
               });
-            
         })
         function myclickHandlerSuccess () {
           // first show the alert
